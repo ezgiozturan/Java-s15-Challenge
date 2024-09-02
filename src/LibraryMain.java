@@ -1,9 +1,9 @@
 import java.util.*;
 
-public class Main {
+public class LibraryMain {
     private static List<Book> books = new ArrayList<>();
-    private static List<Author> authors = new ArrayList<>();
-    private static List<User> users = new ArrayList<>();
+    private static Set<Author> authors = new HashSet<>();
+    private static Set<User> users = new HashSet<>();
     private static Scanner scanner = new Scanner(System.in);
 
     private static void initializeLibrary() {
@@ -35,7 +35,9 @@ public class Main {
             System.out.println("5. Kullanıcı seç ve ödünç aldığı kitapları listele");
             System.out.println("6. Kitap ödünç al");
             System.out.println("7. Kitap iade et ve hasar tespiti yap");
-            System.out.println("8. Çıkış");
+            System.out.println("8. Üyelik oluştur.");
+            System.out.println("9. Üyelik sil.");
+            System.out.println("10. Çıkış");
             System.out.print("Bir seçenek girin: ");
 
             int choice = scanner.nextInt();
@@ -61,16 +63,15 @@ public class Main {
                     borrowBook();
                     break;
                 case 7:
-                    System.out.print("İade edilecek kitabın ismini girin: ");
-                    String bookTitle = scanner.nextLine();
-                    Book bookToReturn = findBookByTitle(bookTitle);
-                    if (bookToReturn != null) {
-                        Librarian.returnBookAndCheckDamage(bookToReturn);
-                    } else {
-                        System.out.println("Kitap bulunamadı.");
-                    }
+                    returnBook();
                     break;
                 case 8:
+                    addUser();
+                    break;
+                case 9:
+                    removeUser();
+                    break;
+                case 10:
                     System.out.println("Çıkış yapılıyor...");
                     return;
                 default:
@@ -79,6 +80,16 @@ public class Main {
         }
     }
 
+    private static void returnBook() {
+        System.out.print("İade edilecek kitabın ismini girin: ");
+        String bookTitle = scanner.nextLine();
+        Book bookToReturn = findBookByTitle(bookTitle);
+        if (bookToReturn != null) {
+            Librarian.returnBookAndCheckDamage(bookToReturn);
+        } else {
+            System.out.println("Kitap bulunamadı.");
+        }
+    }
 
 
     private static void listAuthors() {
@@ -170,6 +181,42 @@ public class Main {
             }
         }
         return null;
+    }
+
+    private static void addUser() {
+        System.out.println("Kullanıcı adı giriniz:");
+        String name = scanner.nextLine();
+        System.out.println("Adres giriniz:");
+        String adress = scanner.nextLine();
+        System.out.println("Telefon numarası giriniz:");
+        int phone = scanner.nextInt();
+        scanner.nextLine();
+
+        User newUser = new User(name,adress,phone,null);
+        users.add(newUser);
+        System.out.println("Üyelik başarıyla oluşturulmuştur.");
+    }
+
+    private static void removeUser() {
+        System.out.println("Adınızı giriniz:");
+        String name = scanner.nextLine();
+        User userToRemove = null;
+
+        for (User u : users) {
+            if (u.getName().equalsIgnoreCase(name)) {
+                userToRemove = u;
+                break;
+            }
+        }
+
+        if (userToRemove != null) {
+            users.remove(userToRemove);
+            System.out.println("Kullanıcı başarıyla silindi");
+        } else {
+            System.out.println("Kullanıcı bulunamadı");
+        }
+
+
     }
 
     }

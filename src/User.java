@@ -30,16 +30,6 @@ public class User extends Person{
         }
     }
 
-    public void returnBook(Book book) {
-        if (borrowedBooks.contains(book)) {
-            borrowedBooks.remove(book);
-            book.setOwner(null);
-            System.out.println( book.getTitle() + " isimli kitap " + getName()  + " tarafından teslim edilmiştir.");
-        } else {
-            System.out.println(" Kitap ödünç alınmıştır.");
-        }
-    }
-
 
 
     @Override
